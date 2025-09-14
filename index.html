@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MiTaxi</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root{
+      --gold1:#ffd700; --gold2:#c5a100; --black:#000; --dark:#111; --mid:#1a1a1a;
+    }
+    body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--black);color:#fff}
+    header{
+      position:sticky;top:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;
+      padding:14px 22px;background:var(--dark);box-shadow:0 2px 10px rgba(255,215,0,.25)
+    }
+    .brand{display:flex;align-items:center;gap:12px;color:var(--gold1);font-weight:700}
+    .logo-circle{
+      width:44px;height:44px;border-radius:50%;background:#fff;color:#111;
+      display:grid;place-items:center;font-size:.58rem;text-align:center;font-weight:700;
+      border:2px solid #fff
+    }
+    .brand-name{font-size:1.4rem}
+    nav{display:flex;gap:12px}
+    nav button{
+      background:linear-gradient(135deg,var(--gold1),var(--gold2));
+      color:#111;border:none;padding:10px 18px;border-radius:28px;
+      font-weight:800;cursor:pointer;box-shadow:0 0 10px rgba(255,215,0,.45);
+      transition:.25s
+    }
+    nav button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    .section{display:none;padding:26px;animation:fade .45s ease}
+    .section.active{display:block}
+    @keyframes fade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+    .title{color:var(--gold1);text-align:center;margin:0 0 10px;font-size:1.6rem}
+    .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+    .card{background:var(--mid);border-radius:14px;overflow:hidden;text-align:center;
+      box-shadow:0 0 14px rgba(255,215,0,.28);transition:.25s}
+    .card:hover{transform:translateY(-4px)}
+    .card img{width:100%;height:170px;object-fit:cover}
+    .card h3{margin:12px 0 6px;color:var(--gold1)}
+    .card p{padding:0 14px 16px;font-size:.94rem;color:#ddd}
+    /* HERO */
+    .hero{text-align:center;margin-bottom:20px}
+    .hero img{
+      width:100%;max-height:350px;object-fit:cover;border-radius:12px;
+      box-shadow:0 0 14px rgba(255,215,0,.3)
+    }
+    .hero p{margin:15px auto 0;max-width:650px;font-size:1.1rem;color:#eee;line-height:1.4}
+    /* FORM */
+    .form-box{
+      max-width:440px;margin:20px auto;padding:22px;background:var(--mid);
+      border-radius:14px;box-shadow:0 0 16px rgba(255,215,0,.35)
+    }
+    .form-box input,.form-box button{
+      width:100%;padding:12px 14px;margin:8px 0;
+      border:none;border-radius:8px;font-size:1rem
+    }
+    .form-box input{background:#222;color:#fff}
+    .form-box input:focus{outline:2px solid var(--gold1)}
+    .form-box button{
+      background:linear-gradient(135deg,var(--gold1),var(--gold2));
+      color:#111;font-weight:800;cursor:pointer;transition:.2s
+    }
+    .form-box button:hover{filter:brightness(1.06)}
+    footer{text-align:center;padding:22px;background:var(--dark);color:#aaa}
+    .socials a{margin:0 10px;color:var(--gold1);font-size:1.4rem;text-decoration:none}
+    /* BURBUJA FLOTANTE */
+    .whatsapp-float {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--gold1), var(--gold2));
+      box-shadow: 0 0 22px rgba(255,215,0,.55);
+      cursor: pointer;
+      z-index: 1100;
+      transition: .25s;
+      overflow: visible;
+    }
+    .whatsapp-float:hover {transform: scale(1.08)}
+    .whatsapp-float .luxury-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+    /* efecto pulsante */
+    .pulse {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: rgba(255,215,0,0.35);
+      animation: pulseAnim 2s infinite;
+      z-index: -1;
+    }
+    @keyframes pulseAnim {
+      0% {transform: scale(1); opacity: 0.8;}
+      70% {transform: scale(1.8); opacity: 0;}
+      100% {opacity: 0;}
+    }
+  </style>
+</head>
+<body onload="showSection('taxi')">
+
+<header>
+  <div class="brand">
+    <div class="logo-circle">Aquí<br>tu logo</div>
+    <div class="brand-name">MiTaxi</div>
+  </div>
+  <nav>
+    <button data-key="nav_trips" onclick="showSection('viajes')">Viajes</button>
+    <button data-key="nav_services" onclick="showSection('servicios')">Servicios</button>
+    <button data-key="nav_taxi" onclick="showSection('taxi')">Pide tu Taxi</button>
+  </nav>
+</header>
+
+<!-- VIAJES -->
+<section id="viajes" class="section">
+  <h2 class="title" data-key="trips_title">VIAJES A:</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="aeropuerto.png" alt="Aeropuertos">
+      <h3 data-key="airport">AEROPUERTOS</h3>
+      <p data-key="airport_text">Traslados seguros y puntuales a todos los aeropuertos.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/323705/pexels-photo-323705.jpeg" alt="Consulados y Embajadas">
+      <h3 data-key="consulates">CONSULADOS Y EMBAJADAS</h3>
+      <p data-key="consulates_text">Viajes confiables para tus citas en consulados, embajadas y asuntos de inmigración.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg" alt="Hospital">
+      <h3 data-key="medical">CITAS MÉDICAS</h3>
+      <p data-key="medical_text">Traslado cómodo y seguro a hospitales y clínicas para tus chequeos regulares.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg" alt="Casinos">
+      <h3 data-key="casinos">CASINOS</h3>
+      <p data-key="casinos_text">Apuesta a tu suerte en los casinos de tu preferencia, te llevamos y te recogemos!.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="section">
+  <h2 class="title" data-key="services_title">SERVICIO DE:</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.pexels.com/photos/346885/pexels-photo-346885.jpeg" alt="Turismo">
+      <h3 data-key="tourism">TURISMO</h3>
+      <p data-key="tourism_text">Te llevamos a los lugares mas hermosos del Estado, y fuera de el tambien</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/616966/pexels-photo-616966.jpeg" alt="Delivery">
+      <h3 data-key="delivery">DELIVERY</h3>
+      <p data-key="delivery_text">Todo lo que quieras a la puerta de tu casa, comida, bebidas, medicinas y más!</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/27406/pexels-photo-27406.jpg" alt="DMV">
+      <h3 data-key="dmv">TRAMITES EN EL DMV</h3>
+      <p data-key="dmv_text">Tramitamos la matricula de tu vehiculo de manera rapida y agil!</p>
+    </div>
+    <div class="card">
+      <img src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg" alt="Escolar">
+      <h3 data-key="school">TRANSPORTE ESCOLAR</h3>
+      <p data-key="school_text">Llevamos y recogemos a tus hijos de la Escuela y el DayCare, siempre seguro, siempre confiable</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO (con hero al inicio) -->
+<section id="taxi" class="section active">
+  <div class="hero">
+    <img src="portada.png" alt="Conductor saludando pasajero adulto mayor">
+    <p data-key="hero_text">Generamos confianza en cada viaje. Para nosotros, nuestros clientes son lo más importante: los tratamos siempre con responsabilidad y respeto.</p>
+  </div>
+
+  <h2 class="title" data-key="order_title">PIDE TU TAXI AHORA</h2>
+  <div class="form-box">
+    <form id="taxiForm" onsubmit="return false;">
+      <input type="text" id="name" placeholder="Nombre y Apellido" data-key-placeholder="name" required>
+      <input type="tel" id="phone" placeholder="Teléfono" data-key-placeholder="phone" required>
+      <input type="email" id="email" placeholder="Correo electrónico" data-key-placeholder="email">
+      <input type="text" id="address" placeholder="Dirección" data-key-placeholder="address" required>
+      <button type="button" data-key="send_whatsapp" onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+      <button type="button" data-key="send_sms" onclick="sendSMS()">Enviar por SMS</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="socials">
+    <a href="#"><i class="fab fa-facebook"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-tiktok"></i></a>
+  </div>
+  <span data-key="footer">© 2025 MiTaxi. Todos los derechos reservados.</span>
+</footer>
+
+<!-- BURBUJA FLOTANTE (con icono elegido) -->
+<a class="whatsapp-float" href="https://wa.me/593983706294" target="_blank">
+  <div class="pulse"></div>
+  <img src="https://static.thenounproject.com/png/2028082-512.png" alt="Auto Premium" class="luxury-icon">
+</a>
+
+<script>
+  function showSection(id){
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function getMessage(){
+    const name=document.getElementById('name').value.trim();
+    const phone=document.getElementById('phone').value.trim();
+    const email=document.getElementById('email').value.trim();
+    const address=document.getElementById('address').value.trim();
+    const maps="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(address);
+    return `Hola, soy ${name}. Mi teléfono es ${phone}. Mi correo es ${email}. Necesito un taxi en: ${address}. Ubicación: ${maps}`;
+  }
+  function sendWhatsApp(){
+    const msg=encodeURIComponent(getMessage());
+    window.open(`https://wa.me/593983706294?text=${msg}`,'_blank');
+  }
+  function sendSMS(){
+    const msg=encodeURIComponent(getMessage());
+    window.location.href=`sms:0983706294?body=${msg}`;
+  }
+
+  // Diccionario de traducciones
+  const translations = {
+    en: {
+      nav_trips:"Trips", nav_services:"Services", nav_taxi:"Order Taxi",
+      trips_title:"TRIPS TO:", airport:"AIRPORTS", airport_text:"Safe and punctual transfers to all airports.",
+      consulates:"CONSULATES & EMBASSIES", consulates_text:"Reliable trips for your appointments at consulates, embassies and immigration matters.",
+      medical:"MEDICAL APPOINTMENTS", medical_text:"Comfortable and safe transfers to hospitals and clinics for your regular checkups.",
+      casinos:"CASINOS", casinos_text:"Bet on your luck at your favorite casinos, we take you and pick you up.",
+      services_title:"SERVICE OF:", tourism:"TOURISM", tourism_text:"We take you to the most beautiful places in the State, and beyond.",
+      delivery:"DELIVERY", delivery_text:"Everything you want at your doorstep: food, drinks, medicines and more.",
+      dmv:"DMV PROCEDURES", dmv_text:"We process your vehicle registration quickly and efficiently.",
+      school:"SCHOOL TRANSPORTATION", school_text:"We take and pick up your children from school and daycare, always safe and reliable.",
+      hero_text:"We generate trust in every trip. For us, our clients are the most important: we always treat them with responsibility and respect.",
+      order_title:"ORDER YOUR TAXI NOW",
+      send_whatsapp:"Send via WhatsApp", send_sms:"Send via SMS",
+      footer:"© 2025 MiTaxi. All rights reserved.",
+      name:"Full Name", phone:"Phone", email:"Email", address:"Address"
+    },
+    es: {} // español ya está por defecto
+  };
+
+  // Traducción automática
+  function applyTranslations(){
+    const lang = navigator.language.startsWith("en") ? "en" : "es";
+    if(lang==="es") return;
+    document.querySelectorAll("[data-key]").forEach(el=>{
+      const key=el.getAttribute("data-key");
+      if(translations[lang][key]) el.textContent=translations[lang][key];
+    });
+    document.querySelectorAll("[data-key-placeholder]").forEach(el=>{
+      const key=el.getAttribute("data-key-placeholder");
+      if(translations[lang][key]) el.placeholder=translations[lang][key];
+    });
+  }
+  applyTranslations();
+</script>
+</body>
+</html>
